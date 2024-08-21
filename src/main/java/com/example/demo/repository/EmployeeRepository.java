@@ -29,7 +29,7 @@ public class EmployeeRepository {
             }
             return response.data();
         } catch (HttpClientErrorException | HttpServerErrorException e) {
-            throw new RuntimeException("HTTP error occurred: " + e.getMessage(), e);
+            throw e;
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while fetching employees", e);
         }
@@ -45,5 +45,6 @@ public class EmployeeRepository {
         } catch (Exception e) {
             throw new RuntimeException("An error occurred while fetching employee by ID", e);
         }
+
     }
 }

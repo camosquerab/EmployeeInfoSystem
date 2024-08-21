@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
-
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -34,11 +33,9 @@ class GlobalExceptionHandlerTest {
 
     @Test
     void handleClientError_shouldReturnTooManyRequestsOnFindAll() throws Exception {
-        // Simular que el controlador lanza una excepción 429 al intentar obtener todos los empleados
         when(employeeController.getAllEmployees())
                 .thenThrow(new HttpClientErrorException(HttpStatus.TOO_MANY_REQUESTS));
 
-        // Realizar la solicitud GET a /api/employees
         mockMvc.perform(get("/api/employees"))
                 .andExpect(status().isTooManyRequests());
     }
