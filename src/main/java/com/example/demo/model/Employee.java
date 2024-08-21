@@ -30,10 +30,8 @@ public class Employee {
 
     }
 
-
     public void setEmployeeAnualSalary() {
         this.employeeAnualSalary = employeeSalary * 12;
     }
 
-    // Getters y Setters
 }
