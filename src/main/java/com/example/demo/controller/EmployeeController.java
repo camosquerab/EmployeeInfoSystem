@@ -1,7 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.EmployeeDTO;
-import com.example.demo.dto.Response;
 import com.example.demo.model.Employee;
 import com.example.demo.service.EmployeeService;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +21,9 @@ public class EmployeeController {
     }
 
     @GetMapping
-    public List<Employee> getAllEmployees() {
-        return employeeService.getAllEmployees();
+    public ResponseEntity<List<Employee>> getAllEmployees() {
+        List<Employee> employees = employeeService.getAllEmployees();
+        return ResponseEntity.ok(employees);
     }
 
     @GetMapping("/{id}")

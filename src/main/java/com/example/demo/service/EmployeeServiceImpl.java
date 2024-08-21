@@ -1,14 +1,9 @@
 package com.example.demo.service;
 
 import com.example.demo.dto.EmployeeDTO;
-import com.example.demo.dto.Response;
 import com.example.demo.model.Employee;
 import com.example.demo.repository.EmployeeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,16 +12,17 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
-    private final RestTemplate restTemplate;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository, RestTemplate restTemplate) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.restTemplate = restTemplate;
     }
 
     @Override
     public List<Employee> getAllEmployees() {
-        return null;
+        List<EmployeeDTO> employeeDTOs = employeeRepository.findAll();
+        return employeeDTOs.stream()
+                .map(this::mapToEntity)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -47,6 +43,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEmployeeSalary(employeeDTO.employeeSalary());
         employee.setEmployeeAge(employeeDTO.employeeAge());
         employee.setProfileImage(employeeDTO.profileImage());
+        employee.setEmployeeAnualSalary(employeeDTO.employeeSalary() * 12);
 
         return employee;
     }

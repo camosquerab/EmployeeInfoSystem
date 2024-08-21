@@ -2,12 +2,13 @@ package com.example.demo.repository;
 
 import com.example.demo.dto.EmployeeDTO;
 import com.example.demo.dto.Response;
+import com.example.demo.dto.ResponseList;
 import org.springframework.stereotype.Repository;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Repository
 public class EmployeeRepository {
@@ -20,17 +21,29 @@ public class EmployeeRepository {
     }
 
     public List<EmployeeDTO> findAll() {
-        String url = BASE_URL + "/employees";
-        EmployeeDTO[] employees = restTemplate.getForObject(url, EmployeeDTO[].class);
-        return Arrays.asList(employees);
+        try {
+            String url = "http://dummy.restapiexample.com/api/v1/employees";
+            ResponseList response = restTemplate.getForObject(url, ResponseList.class);
+            if (response == null || response.data() == null) {
+                throw new RuntimeException("Empty or null response from API");
+            }
+            return response.data();
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new RuntimeException("HTTP error occurred: " + e.getMessage(), e);
+        } catch (Exception e) {
+            throw new RuntimeException("An error occurred while fetching employees", e);
+        }
     }
 
     public EmployeeDTO findById(Long id) {
         String url = BASE_URL + "/employee/" + id;
         try {
-            return Objects.requireNonNull(restTemplate.getForObject(url, Response.class)).data();
+            Response response = restTemplate.getForObject(url, Response.class);
+            return Objects.requireNonNull(response).data();
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw e;
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException("An error occurred while fetching employee by ID", e);
         }
     }
 }

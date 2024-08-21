@@ -10,6 +10,6 @@ public record EmployeeDTO(
         Integer employeeSalary,
         @JsonAlias("employee_age")
         Integer employeeAge,
-        @JsonAlias("employee_name")
+        @JsonAlias("profile_mage")
         String profileImage
 ) {}

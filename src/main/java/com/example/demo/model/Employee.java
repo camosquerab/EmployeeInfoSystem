@@ -16,6 +16,21 @@ public class Employee {
     private Integer employeeAnualSalary;
     private String profileImage;
 
+    public Employee(
+            Long i, String employeeName, int employeeSalary, int employeeAge,
+            String profileImage) {
+        this.setId(i);
+        this.setEmployeeName(employeeName);
+        this.setEmployeeSalary(employeeSalary);
+        this.setEmployeeAge(employeeAge);
+        this.setProfileImage(profileImage);
+    }
+
+    public Employee() {
+
+    }
+
+
     public void setEmployeeAnualSalary() {
         this.employeeAnualSalary = employeeSalary * 12;
     }
